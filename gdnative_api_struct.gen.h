@@ -7,6 +7,7 @@
 #include <arvr/godot_arvr.h>
 #include <nativescript/godot_nativescript.h>
 #include <net/godot_net.h>
+#include <windows/godot_windows.h>
 #include <pluginscript/godot_pluginscript.h>
 #include <videodecoder/godot_videodecoder.h>
 
@@ -18,6 +19,7 @@
 	extern const godot_gdnative_ext_arvr_api_struct *_gdnative_wrapper_arvr_api_struct;  \
 	extern const godot_gdnative_ext_videodecoder_api_struct *_gdnative_wrapper_videodecoder_api_struct;  \
 	extern const godot_gdnative_ext_net_api_struct *_gdnative_wrapper_net_api_struct;  \
+	extern const godot_gdnative_ext_windows_api_struct *_gdnative_wrapper_windows_api_struct;  \
 	_gdnative_wrapper_api_struct = options->api_struct;  \
 	for (unsigned int i = 0; i < _gdnative_wrapper_api_struct->num_extensions; i++) {   \
 		switch (_gdnative_wrapper_api_struct->extensions[i]->type) {  \
@@ -39,6 +41,9 @@
 			case GDNATIVE_EXT_NET:  \
 				_gdnative_wrapper_net_api_struct = (godot_gdnative_ext_net_api_struct *) _gdnative_wrapper_api_struct->extensions[i];  \
 				break;  \
+			case GDNATIVE_EXT_WINDOWS:  \
+				_gdnative_wrapper_windows_api_struct = (godot_gdnative_ext_windows_api_struct *) _gdnative_wrapper_api_struct->extensions[i];  \
+				break;  \
 		}  \
 	}  \
  } while (0)
@@ -55,6 +60,7 @@ enum GDNATIVE_API_TYPES {
 	GDNATIVE_EXT_ARVR,
 	GDNATIVE_EXT_VIDEODECODER,
 	GDNATIVE_EXT_NET,
+	GDNATIVE_EXT_WINDOWS,
 };
 
 typedef struct godot_gdnative_ext_nativescript_1_1_api_struct {
@@ -148,6 +154,14 @@ typedef struct godot_gdnative_ext_net_api_struct {
 	void (*godot_net_bind_packet_peer)(godot_object *p_obj, const godot_net_packet_peer *p_interface);
 	void (*godot_net_bind_multiplayer_peer)(godot_object *p_obj, const godot_net_multiplayer_peer *p_interface);
 } godot_gdnative_ext_net_api_struct;
+
+typedef struct godot_gdnative_ext_windows_api_struct {
+	unsigned int type;
+	godot_gdnative_api_version version;
+	const godot_gdnative_api_struct *next;
+	void *(*godot_windows_get_hdc)();
+	void *(*godot_windows_get_hglrc)();
+} godot_gdnative_ext_windows_api_struct;
 
 typedef struct godot_gdnative_core_1_2_api_struct {
 	unsigned int type;
